@@ -1,0 +1,8 @@
+{
+  "name": "vagasjevassist-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test lib/fill-text.test.js lib/submit-guard.test.js lib/tab-errors.test.js lib/resolve-label.test.js"
+  }
+}

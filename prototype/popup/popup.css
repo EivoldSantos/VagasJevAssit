@@ -1,0 +1,49 @@
+body {
+  font-family: system-ui, sans-serif;
+  width: 360px;
+  margin: 0;
+  padding: 12px;
+  font-size: 13px;
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+
+.hint {
+  color: #555;
+  margin: 0 0 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button {
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.status {
+  min-height: 1.2em;
+  margin: 8px 0 4px;
+  color: #333;
+}
+
+.output {
+  max-height: 280px;
+  overflow: auto;
+  background: #f4f4f4;
+  padding: 8px;
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
