@@ -130,6 +130,21 @@ button.secondary {
   font-size: 12px;
 }
 
+.destructive {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.privacy-block {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
 .error-box {
   background: #fef2f2;
   border: 1px solid #fecaca;
@@ -137,4 +152,131 @@ button.secondary {
   border-radius: 6px;
   font-size: 13px;
   margin-top: 8px;
+}
+
+.profile-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 16px;
+}
+
+.profile-subnav button {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  background: #fafafa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.profile-subnav button.active {
+  background: #eff6ff;
+  color: var(--accent);
+  font-weight: 600;
+  border-color: #bfdbfe;
+}
+
+.profile-tab .field-row {
+  margin-bottom: 12px;
+}
+
+.profile-tab label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.profile-tab input,
+.profile-tab textarea,
+.profile-tab select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.repeatable-list {
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.repeatable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.repeatable-header h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.secondary-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.repeatable-item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  padding: 0 8px 8px;
+}
+
+.repeatable-item summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-btn {
+  border: none;
+  background: none;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  margin: 8px 0;
+}
+
+.merge-panel {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.merge-panel h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.merge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.merge-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #fde68a;
 }
