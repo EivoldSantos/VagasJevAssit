@@ -154,6 +154,11 @@ button.secondary {
   margin-top: 8px;
 }
 
+.error-box.profile-missing {
+  border-width: 2px;
+  font-weight: 600;
+}
+
 .profile-subnav {
   display: flex;
   flex-wrap: wrap;

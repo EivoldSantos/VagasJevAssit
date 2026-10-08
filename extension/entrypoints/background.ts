@@ -1,8 +1,10 @@
 import {
   SidePanelMessageSchema,
   ExtractCompleteMessageSchema,
+  AutofillFormMessageSchema,
 } from "@/lib/messaging/schemas";
 import { handleExtractComplete } from "@/lib/messaging/handle-analyze";
+import { handleAutofillForm } from "@/lib/messaging/handle-autofill";
 import { setExecutionState } from "@/lib/storage/config";
 
 export default defineBackground(() => {
@@ -14,6 +16,20 @@ export default defineBackground(() => {
     const complete = ExtractCompleteMessageSchema.safeParse(message);
     if (complete.success) {
       handleExtractComplete(sender, complete.data.data).then(sendResponse);
+      return true;
+    }
+
+    const autofill = AutofillFormMessageSchema.safeParse(message);
+    if (autofill.success) {
+      if (sender.id !== chrome.runtime.id) {
+        sendResponse({
+          ok: false,
+          error: "Origem não reconhecida.",
+          executionState: "FAILED",
+        });
+        return false;
+      }
+      handleAutofillForm(sender).then(sendResponse);
       return true;
     }
 

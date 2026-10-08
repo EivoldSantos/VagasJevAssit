@@ -35,6 +35,7 @@ export async function getExecutionState(): Promise<string> {
   if (
     v === "IDLE" ||
     v === "ANALYZING" ||
+    v === "FILLING" ||
     v === "READY" ||
     v === "FAILED"
   ) {

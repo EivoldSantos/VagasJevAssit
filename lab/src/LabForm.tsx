@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import ControlledField from "./ControlledField";
 
 declare global {
@@ -14,6 +14,22 @@ export default function LabForm() {
   const [showConditional, setShowConditional] = useState(false);
   const [dynamicFields, setDynamicFields] = useState<DynamicField[]>([]);
   const [dynamicSeq, setDynamicSeq] = useState(0);
+  const [delayedInjectVisible, setDelayedInjectVisible] = useState(false);
+  const delayedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (delayedTimerRef.current) clearTimeout(delayedTimerRef.current);
+    };
+  }, []);
+
+  const onCountryChange = () => {
+    if (delayedTimerRef.current) clearTimeout(delayedTimerRef.current);
+    setDelayedInjectVisible(false);
+    delayedTimerRef.current = setTimeout(() => {
+      setDelayedInjectVisible(true);
+    }, 300);
+  };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,10 +80,27 @@ export default function LabForm() {
         <textarea id="bio" name="bio" rows={3} />
 
         <label htmlFor="country">País</label>
-        <select id="country" name="country" defaultValue="BR">
+        <select
+          id="country"
+          name="country"
+          defaultValue="BR"
+          onChange={onCountryChange}
+        >
           <option value="BR">Brasil</option>
           <option value="PT">Portugal</option>
         </select>
+
+        {delayedInjectVisible && (
+          <div id="dynamic-delayed-block">
+            <label htmlFor="delayed_city">Cidade (após select + 300ms)</label>
+            <input
+              id="delayed_city"
+              name="delayed_city"
+              type="text"
+              data-lab="form-06-delayed"
+            />
+          </div>
+        )}
 
         <fieldset>
           <legend>Modalidade</legend>

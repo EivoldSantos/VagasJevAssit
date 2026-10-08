@@ -1,31 +1,6 @@
-export type ExtractedField = {
-  index: number;
-  label: string;
-  tagName: string;
-  inputType: string;
-  name: string;
-  id: string;
-  currentValue: string;
-  visible: boolean;
-};
-
-const SUBMIT_HINTS = ["submit", "enviar", "send", "candidatura"];
-
-function isSubmitControl(el: HTMLElement): boolean {
-  if (el.tagName === "BUTTON") {
-    const type = (el.getAttribute("type") || "").toLowerCase();
-    if (type === "submit") return true;
-  }
-  if (el instanceof HTMLInputElement && el.type === "submit") return true;
-  const id = (el.id || "").toLowerCase();
-  const text = (el.textContent || "").toLowerCase();
-  for (const h of SUBMIT_HINTS) {
-    if (id.includes(h) || text.includes(h)) {
-      if (el.tagName === "BUTTON" || el.tagName === "INPUT") return true;
-    }
-  }
-  return false;
-}
+import type { FormField } from "@/lib/form-engine/types";
+import { classifyControl } from "@/lib/form-engine/classifier";
+import { isSubmitLikeControl } from "@/lib/form-engine/action-space";
 
 function isVisible(el: HTMLElement): boolean {
   const style = window.getComputedStyle(el);
@@ -79,33 +54,100 @@ function readValue(el: HTMLElement, type: string): string {
   return "";
 }
 
+function isDisabled(el: HTMLElement): boolean {
+  if (
+    el instanceof HTMLInputElement ||
+    el instanceof HTMLTextAreaElement ||
+    el instanceof HTMLSelectElement
+  ) {
+    return el.disabled;
+  }
+  return false;
+}
+
+function isRequired(el: HTMLElement): boolean {
+  if (
+    el instanceof HTMLInputElement ||
+    el instanceof HTMLTextAreaElement ||
+    el instanceof HTMLSelectElement
+  ) {
+    return el.required;
+  }
+  return false;
+}
+
 export function extractFieldsFromDocument(): {
+  snapshotId: string;
   count: number;
-  fields: ExtractedField[];
+  fields: FormField[];
 } {
+  const snapshotId = crypto.randomUUID();
   const root =
     document.querySelector("#lab-application-form") ?? document.body;
   const nodes = root.querySelectorAll("input, textarea, select, button");
-  const fields: ExtractedField[] = [];
+  const fields: FormField[] = [];
+  let domIndex = 0;
 
-  nodes.forEach((node, index) => {
+  nodes.forEach((node) => {
     if (!(node instanceof HTMLElement)) return;
-    if (isSubmitControl(node)) return;
+    if (isSubmitLikeControl(node)) return;
     if (node.tagName === "BUTTON") return;
     if (node instanceof HTMLInputElement && node.type === "hidden") return;
 
     const inputType = controlType(node);
-    fields.push({
-      index,
-      label: resolveLabel(node),
+    const visible = isVisible(node);
+    const disabled = isDisabled(node);
+    const autocomplete =
+      node instanceof HTMLInputElement
+        ? node.getAttribute("autocomplete") || undefined
+        : undefined;
+
+    const classified = classifyControl({
       tagName: node.tagName.toLowerCase(),
       inputType,
-      name: node.getAttribute("name") || "",
-      id: node.id || "",
-      currentValue: readValue(node, inputType),
-      visible: isVisible(node),
+      name: node.getAttribute("name") || undefined,
+      id: node.id || undefined,
+      autocomplete,
+      disabled,
+      visible,
+    });
+
+    const sensitive = classified.sensitive;
+    const currentValue = sensitive ? undefined : readValue(node, inputType);
+
+    fields.push({
+      fieldId: crypto.randomUUID(),
+      snapshotId,
+      tagName: node.tagName.toLowerCase(),
+      inputType,
+      label: resolveLabel(node) || undefined,
+      name: node.getAttribute("name") || undefined,
+      id: node.id || undefined,
+      placeholder: node.getAttribute("placeholder") || undefined,
+      ariaLabel: node.getAttribute("aria-label") || undefined,
+      currentValue,
+      required: isRequired(node),
+      visible,
+      disabled,
+      supportedOperations: classified.supportedOperations,
+      sensitive,
+      domIndex: domIndex++,
     });
   });
 
-  return { count: fields.length, fields };
+  return { snapshotId, count: fields.length, fields };
+}
+
+/** Collect visible fillable elements in the same order as extractFieldsFromDocument. */
+export function collectFieldElements(root: ParentNode): HTMLElement[] {
+  const nodes = root.querySelectorAll("input, textarea, select, button");
+  const out: HTMLElement[] = [];
+  nodes.forEach((node) => {
+    if (!(node instanceof HTMLElement)) return;
+    if (isSubmitLikeControl(node)) return;
+    if (node.tagName === "BUTTON") return;
+    if (node instanceof HTMLInputElement && node.type === "hidden") return;
+    out.push(node);
+  });
+  return out;
 }
