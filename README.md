@@ -28,9 +28,10 @@ O foco é **poucos sites bem feitos**, com preenchimento **verificável**, não 
 | Pasta | Função |
 |--------|--------|
 | [`lab/`](lab/) | Formulário de teste local (React) para desenvolver leitura e preenchimento |
-| [`prototype/`](prototype/) | Extensão Chrome experimental (MV3) usada hoje no desenvolvimento |
+| [`extension/`](extension/) | Extensão **WXT** com Side Panel (produto em construção) |
+| [`prototype/`](prototype/) | Protótipo Phase 1 (popup) — referência legada; use `extension/` para desenvolvimento |
 
-A extensão definitiva (WXT, painel lateral de produto) ainda está em evolução; o `prototype/` serve para validar a ideia no lab antes disso.
+Carregue a build em `extension/.output/chrome-mv3` (após `npm run build --prefix extension`). O `prototype/` permanece opcional para comparar com a Phase 1.
 
 ### Testar localmente
 
@@ -43,11 +44,13 @@ A extensão definitiva (WXT, painel lateral de produto) ainda está em evoluçã
 
    Abra [http://127.0.0.1:5173](http://127.0.0.1:5173).
 
-2. No Chrome: `chrome://extensions` → **Modo do desenvolvedor** → **Carregar sem compactação** → pasta `prototype/`.
+2. Build da extensão: `npm --prefix extension install` e `npm --prefix extension run build`.
 
-3. Com a aba do lab ativa, abra o popup da extensão → **Listar campos** / **Preencher fictício**.
+3. No Chrome: **Carregar sem compactação** → pasta `extension/.output/chrome-mv3`.
 
-Mais detalhes em [`lab/README.md`](lab/README.md) e [`prototype/README.md`](prototype/README.md).
+4. Com a aba do lab ativa, abra o **Side Panel** → **Candidatura** → **Analisar formulário**.
+
+Mais detalhes em [`lab/README.md`](lab/README.md) e [`extension/README.md`](extension/README.md).
 
 ## Princípios
 
