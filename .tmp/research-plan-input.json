@@ -1,0 +1,11 @@
+{
+  "ecosystem": "npm",
+  "config": { "exa_search": false, "brave_search": false, "firecrawl": false, "tavily_search": false },
+  "questions": [
+    { "text": "Chrome extension Manifest V3 activeTab and scripting.executeScript user gesture injection", "kind": "docs", "library": "chrome extensions", "version": "mv3" },
+    { "text": "How to set value on React controlled input using native value setter and dispatch input event", "kind": "web" },
+    { "text": "Vite dev server strictPort localhost configuration for fixed port", "kind": "docs", "library": "vite", "version": "6" },
+    { "text": "Chrome extension MV3 restricted URLs chrome:// cannot inject content scripts", "kind": "docs", "library": "chrome extensions", "version": "mv3" },
+    { "text": "browser-use jev-ultrafast TypeSafe CDP snapshot architecture", "kind": "web" }
+  ]
+}
